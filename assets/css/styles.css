@@ -1,0 +1,35 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Sofia&display=swap');
+
+.columna{
+    background-color: rgb(120, 143, 124);
+    color: rgb(255, 0, 0);
+    
+  }
+ 
+ .columna img{
+    width: 100%;
+    padding: 10px;
+    opacity: 90%;
+ }
+ .icono{
+    width: 5em;
+}
+.spacing{
+margin: 1%;
+font-family: 'Sofia', cursive;
+}
+
+.info_curso{
+    background-color: rgb(37, 37, 47);
+    opacity: 80%;
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 10%;
+    color: aliceblue;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+/* espaciadp hacia afuera es un margin hijo-padre
+espaciaod hacia dentro es un pading padre-hijo*/
