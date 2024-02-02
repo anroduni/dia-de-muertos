@@ -1,10 +1,16 @@
 <?php
-  $opc = $_GET['opc'];
+  $opc = $_GET['opc'];//generalmente se recomienda usar mejor el metodo POST para mas privacidad/seguridad de los datos; peor por ahora se usa el metodo GET por asuntos tenicos favorables a la explicacion
+
+  //GET //manda los datos por url
+  //POST//manda los datos ocultos
+
+  /*La diferencia principal entre los métodos GET y POST en HTTP radica en cómo transmiten los datos: GET envía datos a través de la URL, visible en la barra de direcciones del navegador, mientras que POST envía datos de forma más segura en el cuerpo de la solicitud, lo que es invisible para el usuario.*/
+
 switch ($opc) {
     case 1:
         # Registrar comentarios de clienes
-       
-        $nombre = $_POST['txtNombre'];
+       //recibe los valores enviados por la url desde el formulario de contactos
+        $nombre = $_POST['txtNombre'];r
         $email  = $_POST['txtEmail'];
         $tel    = $_POST['txtTelefono'];
         $coment = $_POST['txtComentarios'];
@@ -13,32 +19,29 @@ switch ($opc) {
     #bd- base de datos- conjunto de datos almacenados bajo un contexto
 
     case 2:
-
+//se establece la conexion a la bd; host, user, password, bd
         $mysqli = new mysqli("127.0.0.1", "unicuc", "1234", "cursocuc");
 
-        if ($mysqli->connect_errno) {
-            echo "Falló la conexión: " . $mysqli->connect_error;
+        if ($mysqli->connect_errno) {// corrobora si hubo algun error al intentar establecer la conexion
+            echo "Falló la conexión: " . $mysqli->connect_error;//notifica que hubo un error y cual error fue aparentemente
         }
-        
+        //una vez se establece la conexion, se obtienen los datos de una tabla: tblcomentarios
         $getComents = $mysqli->query("SELECT * FROM tblcomentarios");
 
-
+//se corrobora la existencia de los datos
 if ($getComents) {
+    //se imprimen todos los registros encontrados
     while ($fila = $getComents->fetch_assoc()) {
-        echo $fila["nombre"], "<br>";
+        echo $fila["nombre"], "<br>";//br es el salto de linea de html//php permite otros lenguajes bajo cierta sintaxis
         echo $fila["email"], "<br>";
         echo $fila["telefono"], "<br>";
         echo $fila["comentario"], "<br>";
     }
 } else {
-    echo "Error al ejecutar la consulta: " . $mysqli->error;
+    echo "Error al ejecutar la consulta: " . $mysqli->error;//imprimir mensaje de error y el error que hubo en la conexion al ejecutar la consulta
 }
-echo $mysqli->host_info, "\n";
-$mysqli->close();
-
-
-
-
+echo $mysqli->host_info, "\n"; //imprimir info de conexion mas salto de linea
+$mysqli->close(); //cerrar conexion
 
         break;
     default:
