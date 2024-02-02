@@ -91,24 +91,24 @@
 
 <main>
     <div class="container" >
-    <form action="" method="post">
+    <form action="../controlador/clientesController.php" method="get">
       <div class="form-group">
         <label for="txtNombre">Nombre completo</label>
         <input type="text" name="txtNombre" id="txtNombre" class="form-control" placeholder="Nombre">
       </div>
       <div class="form-group">
         <label for="txtEmail">Email</label>
-        <input type="email" class="form-control" id="txtEmail" placeholder="Email">
+        <input type="email" class="form-control" name="txtEmail" id="txtEmail" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="txtTelefono">Telefono</label>
+        <input type="number" class="form-control" name="txtTelefono" id="txtTelefono" placeholder="Telefono">
       </div>
       <div class="form-group">
         <label for="txtComentario">Comentario</label>
-        <input type="Comentario" class="form-control" id="txtComentario" placeholder="Comentario" cols="30" rows="30">
+        <textarea class="form-control" id="txtComentario" name="txtComentario" placeholder="Comentario" cols="16" rows="8"></textarea>
       </div>
-      <div class="form-group">
-        <label for="txtComentario">Comentario</label>
-        <textarea class="form-control" id="txtComentario" placeholder="Comentario" cols="16" rows="8"></textarea>
-      </div>
-      <button type="button" class="btn btn-primary">Enviar comentarios</button>
+      <button type="submit" class="btn btn-primary">Enviar comentarios</button>
       <button type="button" class="btn btn-danger">Regresar</button>
 
     </form>
