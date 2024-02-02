@@ -10,7 +10,7 @@ switch ($opc) {
         $coment = $_POST['txtComentarios'];
         //REGISTRAR LOS VALORES EN LA BASE DE DATOS
         break;
-    #bd- base de datos- conjunot de datos almacenados bajo un contexto
+    #bd- base de datos- conjunto de datos almacenados bajo un contexto
 
     case 2:
 
