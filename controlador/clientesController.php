@@ -1,4 +1,7 @@
 <?php
+ require "../modelos/ClientesModel.php";//?importar clietesMoldel para su proximo uso
+require "../modelos/Conexion.php";
+
   $opc = $_GET['opc'];//generalmente se recomienda usar mejor el metodo POST para mas privacidad/seguridad de los datos; peor por ahora se usa el metodo GET por asuntos tenicos favorables a la explicacion
 
   //GET //manda los datos por url
@@ -10,7 +13,7 @@ switch ($opc) {
     case 1:
         # Registrar comentarios de clienes
        //recibe los valores enviados por la url desde el formulario de contactos
-        $nombre = $_POST['txtNombre'];r
+        $nombre = $_POST['txtNombre'];
         $email  = $_POST['txtEmail'];
         $tel    = $_POST['txtTelefono'];
         $coment = $_POST['txtComentarios'];
@@ -19,29 +22,35 @@ switch ($opc) {
     #bd- base de datos- conjunto de datos almacenados bajo un contexto
 
     case 2:
-//se establece la conexion a la bd; host, user, password, bd
-        $mysqli = new mysqli("127.0.0.1", "unicuc", "1234", "cursocuc");
+/*
+    //! El codigo seiguiente se movio a distintos archvos para su mejor desempeño
+    //?se establece la conexion a la bd; host, user, password, bd
+    $mysqli = new mysqli("127.0.0.1", "unicuc", "1234", "cursocuc");
 
-        if ($mysqli->connect_errno) {// corrobora si hubo algun error al intentar establecer la conexion
-            echo "Falló la conexión: " . $mysqli->connect_error;//notifica que hubo un error y cual error fue aparentemente
-        }
-        //una vez se establece la conexion, se obtienen los datos de una tabla: tblcomentarios
-        $getComents = $mysqli->query("SELECT * FROM tblcomentarios");
-
-//se corrobora la existencia de los datos
-if ($getComents) {
-    //se imprimen todos los registros encontrados
-    while ($fila = $getComents->fetch_assoc()) {
-        echo $fila["nombre"], "<br>";//br es el salto de linea de html//php permite otros lenguajes bajo cierta sintaxis
-        echo $fila["email"], "<br>";
-        echo $fila["telefono"], "<br>";
-        echo $fila["comentario"], "<br>";
+     if ($mysqli->connect_errno) {// corrobora si hubo algun error al intentar establecer la conexion
+    echo "Falló la conexión: " . $mysqli->connect_error;//notifica que hubo un error y cual error fue aparentemente
     }
-} else {
-    echo "Error al ejecutar la consulta: " . $mysqli->error;//imprimir mensaje de error y el error que hubo en la conexion al ejecutar la consulta
-}
-echo $mysqli->host_info, "\n"; //imprimir info de conexion mas salto de linea
-$mysqli->close(); //cerrar conexion
+    //? una vez se establece la conexion, se obtienen los datos de una tabla: tblcomentarios
+    $getComents = $mysqli->query("SELECT * FROM tblcomentarios");
+*/
+   //? se llama a la otra clase y se obtiene uno de sus metodos/funciones
+$clientes=new ClientesModel();
+$getComents=$clientes->SELECT();
+    //? se corrobora la existencia de los datos
+    if ($getComents) {
+    //? se imprimen todos los registros encontrados
+    while ($fila = $getComents->fetch_assoc()) {
+    echo $fila["nombre"], "<br>";//?br es el salto de linea de html//php permite otros lenguajes bajo cierta sintaxis
+    echo $fila["email"], "<br>";
+    echo $fila["telefono"], "<br>";
+    echo $fila["comentario"], "<br>";
+    }
+    } else {
+    echo "Error al ejecutar la consulta";//?imprimir mensaje de error y el error que hubo en la conexion al ejecutar la consulta
+    }
+    
+
+
 
         break;
     default:
@@ -50,6 +59,8 @@ $mysqli->close(); //cerrar conexion
         break;
 }
 
+//! abrir archivo en web
+//!http://localhost/proyecto%20estructura/
 //----------------------------------------------------------------------------------------
 //ver la pagina del profe
     //http://192.168.100.232:8080/curso/   ip variable
