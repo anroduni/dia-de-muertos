@@ -11,13 +11,17 @@ require "../modelos/Conexion.php";
 
 switch ($opc) {
     case 1:
+        $clientes=new ClientesModel();
+
         # Registrar comentarios de clienes
        //recibe los valores enviados por la url desde el formulario de contactos
-        $nombre = $_POST['txtNombre'];
-        $email  = $_POST['txtEmail'];
-        $tel    = $_POST['txtTelefono'];
-        $coment = $_POST['txtComentarios'];
+        $nombre = $_GET['txtNombre'];
+        $email  = $_GET['txtEmail'];
+        $tel    = $_GET['txtTelefono'];
+        $coment = $_GET['txtComentario'];
         //REGISTRAR LOS VALORES EN LA BASE DE DATOS
+      $res = $clientes->INSERT($nombre, $email, $tel, $coment);
+echo $res;
         break;
     #bd- base de datos- conjunto de datos almacenados bajo un contexto
 
@@ -43,7 +47,7 @@ $getComents=$clientes->SELECT();
     echo $fila["nombre"], "<br>";//?br es el salto de linea de html//php permite otros lenguajes bajo cierta sintaxis
     echo $fila["email"], "<br>";
     echo $fila["telefono"], "<br>";
-    echo $fila["comentario"], "<br>";
+    echo $fila["comentario"], "<br>","<br>";
     }
     } else {
     echo "Error al ejecutar la consulta";//?imprimir mensaje de error y el error que hubo en la conexion al ejecutar la consulta
