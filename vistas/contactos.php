@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="../assets/css/styles.css" />
     <link rel="stylesheet" href="../assets\css\contactos.css" />
 
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -111,6 +111,50 @@
       <button type="submit" class="btn btn-primary">Enviar comentarios</button>
       <button type="button" class="btn btn-danger">Regresar</button>
 
+
+      <div>
+        <h3>Comentarios previos</h3>
+
+
+
+
+        <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Comentario</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        require_once("../modelos/conexion.php");
+        require_once("../modelos/ClientesModel.php");
+        $clientes = new ClientesModel();
+        $getComments = $clientes->SELECT();
+        if($getComments){
+          while ($fila = $getComments->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>".$fila["nombre"]."</td>";
+            echo "<td>".$fila["email"]."</td>";
+            echo "<td>".$fila["telefono"]."</td>";
+            echo "<td>".$fila["comentario"]."</td>";
+            echo "<td>";
+            echo "<button type='button' class='btn btn-primary' onclick=\"actualizar('".$fila["nombre"]."')\">Editar comentario</button>";
+            echo "<button type='button' class='btn btn-danger' onclick=\"eliminar()\">Eliminar comentario</button>";
+            echo "</td>";
+            echo "</tr>";
+        }
+        
+        
+        }
+        ?>
+    </tbody>
+</table>
+
+
+      </div>
     </form>
     </div>
 </main>
@@ -154,7 +198,18 @@
       </div>
     </div>
   </footer>
+  <script>
+   //  document.getElementById("txtNombre").value="poooorr fiiiiiiiiiiinnn";
 
+   function actualizar(nombre){
+    alert(nombre)
+   }
+
+   function eliminar(){
+
+   }
+
+    </script>
       <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
