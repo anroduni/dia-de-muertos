@@ -2,7 +2,7 @@
  require "../modelos/ClientesModel.php";//?importar clietesMoldel para su proximo uso
 require "../modelos/Conexion.php";
 
-  $opc = $_GET['opc'];//generalmente se recomienda usar mejor el metodo POST para mas privacidad/seguridad de los datos; peor por ahora se usa el metodo GET por asuntos tenicos favorables a la explicacion
+  $opc =1;//generalmente se recomienda usar mejor el metodo POST para mas privacidad/seguridad de los datos; peor por ahora se usa el metodo GET por asuntos tenicos favorables a la explicacion
 
   //GET //manda los datos por url
   //POST//manda los datos ocultos

@@ -25,13 +25,15 @@ VALUES ('" . $nombre . "', '" . $email . "', '" . $telefono . "', '" . $comentar
 */
         if ($mysqli->query($sql) == TRUE) { //comprueba el resultado; estado del mismo:¿salio bien o mal?
 
-            return "Registro insertado" . $mysqli->host_info . "\n"; //informa del resultado correcto esperado
+            return "Registro insertado";//. $mysqli->host_info . "\n"; //informa del resultado correcto esperado
 
         } else {
             return "Ocurrió un error al insertar: " . $mysqli->error . "\n"; //informa del error encontrado
         }
         $mysqli->close(); //?cerrar conexion  
     }
+
+
     function UPDATE($idComentario, $nombre, $email, $telefono, $comentario)
     {
         $conexion = new Conexion(); //se establece conezion a bd, mysql
