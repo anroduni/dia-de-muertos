@@ -1,32 +1,33 @@
 <?php
- require "../modelos/ClientesModel.php";//?importar clietesMoldel para su proximo uso
+require "../modelos/ClientesModel.php"; //?importar clietesMoldel para su proximo uso
 require "../modelos/Conexion.php";
 
-  $opc =1;//generalmente se recomienda usar mejor el metodo POST para mas privacidad/seguridad de los datos; peor por ahora se usa el metodo GET por asuntos tenicos favorables a la explicacion
+$opc = $_POST['opcionOpc'];; //generalmente se recomienda usar mejor el metodo POST para mas privacidad/seguridad de los datos; peor por ahora se usa el metodo GET por asuntos tenicos favorables a la explicacion
 
-  //GET //manda los datos por url
-  //POST//manda los datos ocultos
+//GET //manda los datos por url
+//POST//manda los datos ocultos
 
-  /*La diferencia principal entre los métodos GET y POST en HTTP radica en cómo transmiten los datos: GET envía datos a través de la URL, visible en la barra de direcciones del navegador, mientras que POST envía datos de forma más segura en el cuerpo de la solicitud, lo que es invisible para el usuario.*/
+/*La diferencia principal entre los métodos GET y POST en HTTP radica en cómo transmiten los datos: GET envía datos a través de la URL, visible en la barra de direcciones del navegador, mientras que POST envía datos de forma más segura en el cuerpo de la solicitud, lo que es invisible para el usuario.*/
 
 switch ($opc) {
     case 1:
-        $clientes=new ClientesModel();
+        $clientes = new ClientesModel();
 
         # Registrar comentarios de clienes
-       //recibe los valores enviados por la url desde el formulario de contactos
-        $nombre = $_GET['txtNombre'];
-        $email  = $_GET['txtEmail'];
-        $tel    = $_GET['txtTelefono'];
-        $coment = $_GET['txtComentario'];
+        //recibe los valores enviados por la url desde el formulario de contactos
+
+        $nombre = $_POST['txtNombre'];
+        $email  = $_POST['txtEmail'];
+        $tel    = $_POST['txtTelefono'];
+        $coment = $_POST['txtComentario'];
         //REGISTRAR LOS VALORES EN LA BASE DE DATOS
-      $res = $clientes->INSERT($nombre, $email, $tel, $coment);
-echo $res;
+        $res = $clientes->INSERT($nombre, $email, $tel, $coment);
+        echo $res;
         break;
-    #bd- base de datos- conjunto de datos almacenados bajo un contexto
+        #bd- base de datos- conjunto de datos almacenados bajo un contexto
 
     case 2:
-/*
+        /*
     //! El codigo seiguiente se movio a distintos archvos para su mejor desempeño
     //?se establece la conexion a la bd; host, user, password, bd
     $mysqli = new mysqli("127.0.0.1", "unicuc", "1234", "cursocuc");
@@ -37,9 +38,11 @@ echo $res;
     //? una vez se establece la conexion, se obtienen los datos de una tabla: tblcomentarios
     $getComents = $mysqli->query("SELECT * FROM tblcomentarios");
 */
+
+        /*
    //? se llama a la otra clase y se obtiene uno de sus metodos/funciones
-$clientes=new ClientesModel();
-$getComents=$clientes->SELECT();
+    $clientes=new ClientesModel();
+    $getComents=$clientes->SELECT();
     //? se corrobora la existencia de los datos
     if ($getComents) {
     //? se imprimen todos los registros encontrados
@@ -53,13 +56,30 @@ $getComents=$clientes->SELECT();
     echo "Error al ejecutar la consulta";//?imprimir mensaje de error y el error que hubo en la conexion al ejecutar la consulta
     }
     
+*/
 
+        $clientes = new ClientesModel();
 
+        $idComentario = $_POST['hddIdComentario'];
+        $nombre = $_POST['txtNombre'];
+        $email  = $_POST['txtEmail'];
+        $telefono    = $_POST['txtTelefono'];
+        $comentario = $_POST['txtComentario'];
+
+        $res = $clientes->UPDATE($idComentario, $nombre, $email, $telefono, $comentario);
+        echo $res;
 
         break;
+
+        case 3:
+            $clientes = new ClientesModel();
+            $idComentario = $_POST['hddIdComentario'];
+            $res = $clientes->DELETE($idComentario);
+            echo $res;
+            break;
     default:
         # code...
-        
+
         break;
 }
 
@@ -67,11 +87,11 @@ $getComents=$clientes->SELECT();
 //!http://localhost/proyecto%20estructura/
 //----------------------------------------------------------------------------------------
 //ver la pagina del profe
-    //http://192.168.100.232:8080/curso/   ip variable
+//http://192.168.100.232:8080/curso/   ip variable
 
 
-    //Un usuario se crea con el superusuario root; fuera de cualquier base de datos
-    //A un usuario creado se le otorgan permisos; fuera de cualquier base de datos
+//Un usuario se crea con el superusuario root; fuera de cualquier base de datos
+//A un usuario creado se le otorgan permisos; fuera de cualquier base de datos
 
 //ver usuarios existentes con un(solo se puede con un superusuario(root))
 //ver los usuarios existentes en MySQL
@@ -218,5 +238,3 @@ Reinicia el servidor MySQL para aplicar los cambios.
 //puedes ajustar el nombre del archivo al que desees; no la extension
 
 //--------------------------------------------------------
-?>
-

@@ -54,8 +54,8 @@
     </div>
   </nav>
   <div id="alert1" class="alert alert-default" role="alert">
-  A simple success alert—check it out!
-</div>
+    A simple success alert—check it out!
+  </div>
 
   <!--Main-->
   <!--el methodo get envia los datos al destino, pero muestra los datos en la url-->
@@ -66,7 +66,8 @@
     <div class="container">
       <form id="frmContacto">
         <div class="form-group">
-          
+          <input type="hidden" name="hddIdComentario" id="hddIdComentario" />
+          <input type="hidden" name="opcionOpc" id="opcionOpc" />
           <label for="txtNombre">Nombre completo</label>
           <input type="text" name="txtNombre" id="txtNombre" class="form-control" placeholder="Nombre">
         </div>
@@ -119,7 +120,7 @@
                   //            echo "<button type='button' class='btn btn-primary' \"onclick=actualizar('".$fila["idComentario"]."\",\"".$fila["nombre"]."\",\"".$fila["email"]."\",\"".$fila["telefono"]."\",\"".$fila["comentario"]."\")'>Editar comentario</button>";
                   //          echo "<button type='button' class='btn btn-danger' \"onclick=eliminar()\">Eliminar comentario</button>";
                   echo "<button type='button' class='btn btn-primary' onclick=\"actualizar('" . $fila["idComentario"] . "','" . $fila["nombre"] . "','" . $fila["email"] . "','" . $fila["telefono"] . "','" . $fila["comentario"] . "')\">Editar comentario</button>";
-                  echo "<button type='button' class='btn btn-danger' onclick=\"eliminar()\">Eliminar comentario</button>";
+                  echo "<button type='button' class='btn btn-danger' onclick=\"eliminar('" . $fila["idComentario"] . "')\">Eliminar comentario</button>";
 
                   echo "</td>";
                   echo "</tr>";
@@ -180,57 +181,124 @@
     //  document.getElementById("txtNombre").value="poooorr fiiiiiiiiiiinnn";//localiza un elemento el el arbolo dom por medio de su id y le asigna un valor
 
     function actualizar(idcomentario, nombre, email, telefono, comentario) {
-
+      /*
       //js
       document.getElementById("txtNombre").value = nombre//localiza un elemento el el arbolo dom por medio de su id y le asigna un valor
       document.getElementById("txtEmail").value = email
       document.getElementById("txtTelefono").value = telefono
       document.getElementById("txtComentario").value = comentario
-
+*/
       //Jquery
+      $(`#hddIdComentario`).prop("value", idcomentario);
       $(`#txtNombre`).prop("value", nombre);
       $(`#txtEmail`).prop("value", email);
       $(`#txtTelefono`).prop("value", telefono);
       $(`#txtComentario`).prop("value", comentario);
+      $(`#opcionOpc`).prop("value", 2);
 
+
+
+      $(`#btnInsertar`).hide();
+      $(`#btnActualizar`).show();
+
+      $(`#btnActualizar`).click(function() {
+        var formData = $("#frmContacto").serialize(); //serializa el fomr,//investigagar mas
+
+        $.ajax({ //peticion ajax; hay maneraas mas recientes, investiga, no recuerdo el nombre
+          type: "POST", //escoge como mandar los datos, GET//POST//PUT//DELETE // anteriormente especificada en el method del form
+          url: "../controlador/clientesController.php", //lugar de destino del envio//ruta anteriormente en action del form
+          data: formData, //datos a mandar
+          success: function(data) { //tras la accion(mensaje), recibe una respuesta
+            console.log(data); //imprime data para saber su contenido
+            $("#alert1").show(); //muestra la alerta
+            $("#alert1").html(data) //coloca la info de la respuesta data, en la alerta
+            if (data.trim() === "Se actualizo correctamente el registro") { //compara el valor recibido con el valor esperado
+              $("#alert1").attr("class", "alert-primary"); //otorga nuevos/distintos estilos de css boostrap
+            } else {
+              $("#alert1").attr("class", "alert-danger"); //addClass tambien funciona
+            }
+          }
+        });
+
+        $(`#hddIdComentario`).prop("value", "");
+        $(`#txtNombre`).prop("value", "");
+        $(`#txtEmail`).prop("value", "");
+        $(`#txtTelefono`).prop("value", "");
+        $(`#txtComentario`).prop("value", "");
+
+        $(`#btnInsertar`).show();
+        $(`#btnActualizar`).hide();
+
+
+      })
     }
 
-    function eliminar() {
+    function eliminar(idcomentario) {
+      
+      if (confirm("¿Deseas eliminar el comentario selecionado?")) {
+       alert(" mover aqui el ajax")
+      } else {
+        
+      }
+      confirm("¿Deseas eliminar el comentario selecionado?",
+        function(respuesta) {
+          console.log(respuesta);
+          if (respuesta == `granted`) {
+            $.ajax({
+              type: "POST",
+              data: {
+                "idcomentario": idcomentario
+              },
+              url: "../controlador/clientesController.php",
+              success: function(data) {
+                console.log(data); //imprime data para saber su contenido
+                $("#alert1").show(); //muestra la alerta
+                $("#alert1").html(data) //coloca la info de la respuesta data, en la alerta
+                if (data.trim() === "Eliminacion/borrado Exitoso") { //compara el valor recibido con el valor esperado
+                  $("#alert1").attr("class", "alert-primary"); //otorga nuevos/distintos estilos de css boostrap
+                } else {
+                  $("#alert1").attr("class", "alert-danger"); //addClass tambien funciona
+                }
+              }
+            })
+          } else {
+alert("no quiso eliminar")
+          }
+        })
+
 
     }
 
     //Jquery
- $(document).ready(function(){//se asegura de que el arbol dom ya este cargado
-  $("#btnActualizar").hide();//oculta el boton
-  $("#alert1").hide();//oculta la alerta//hide() en gral oculta elementos
-  $("#btnInsertar").click(function(){//se le otorga el envento onclick
-  
-   // $("#frmContacto").submit(function(){
-    var formData = $("#frmContacto").serialize();//serializa el fomr,//investigagar mas
-    $.ajax({//peticion ajax; hay maneraas mas recientes, investiga, no recuerdo el nombre
-      type:"GET",//escoge como mandar los datos, GET//POST//PUT//DELETE // anteriormente especificada en el method del form
-      url:"../controlador/clientesController.php",//lugar de destino del envio//ruta anteriormente en action del form
-      data:formData,//datos a mandar
-      success:function(data){//tras la accion(mensaje), recibe una respuesta
-       console.log(data);//imprime data para saber su contenido
-       $("#alert1").show();//muestra la alerta
-          $("#alert1").html(data)//coloca la info de la respuesta data, en la alerta
-        if (data.trim() === "Registro insertado") {//compara el valor recibido con el valor esperado
-          $("#alert1").attr("class","alert-primary");//otorga nuevos/distintos estilos de css boostrap
-        }else{
-          $("#alert1").attr("class","alert-danger");//addClass tambien funciona
-        }
-        
-      }
+    $(document).ready(function() { //se asegura de que el arbol dom ya este cargado
+      $("#btnActualizar").hide(); //oculta el boton
+      $("#alert1").hide(); //oculta la alerta//hide() en gral oculta elementos
+      $("#btnInsertar").click(function() { //se le otorga el envento onclick
+        $(`#opcionOpc`).prop("value", 1);
+        // $("#frmContacto").submit(function(){
+        var formData = $("#frmContacto").serialize(); //serializa el fomr,//investigagar mas
+        $.ajax({ //peticion ajax; hay maneraas mas recientes, investiga, no recuerdo el nombre
+          type: "POST", //escoge como mandar los datos, GET//POST//PUT//DELETE // anteriormente especificada en el method del form
+          url: "../controlador/clientesController.php", //lugar de destino del envio//ruta anteriormente en action del form
+          data: formData, //datos a mandar
+          success: function(data) { //tras la accion(mensaje), recibe una respuesta
+            console.log(data); //imprime data para saber su contenido
+            $("#alert1").show(); //muestra la alerta
+            $("#alert1").html(data) //coloca la info de la respuesta data, en la alerta
+            if (data.trim() === "Registro insertado") { //compara el valor recibido con el valor esperado
+              $("#alert1").attr("class", "alert-primary"); //otorga nuevos/distintos estilos de css boostrap
+            } else {
+              $("#alert1").attr("class", "alert-danger"); //addClass tambien funciona
+            }
+
+          }
+        });
+      });
+      return false; //retorna respuesta//investiga que onda
     });
-  });
-  return false;//retorna respuesta//investiga que onda
- });
 
- //});
-
-  
- </script>
+    //});
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </body>
 

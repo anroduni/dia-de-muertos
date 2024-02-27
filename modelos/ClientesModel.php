@@ -40,16 +40,16 @@ VALUES ('" . $nombre . "', '" . $email . "', '" . $telefono . "', '" . $comentar
         $mysqli = $conexion->crearConexion();
 
         $sql = "UPDATE tblcomentarios 
-SET nombre='$nombre', email='$email', telefono='$telefono', comentarios='$comentario' 
+SET nombre='$nombre', email='$email', telefono='$telefono', comentario='$comentario' 
 WHERE idComentario = $idComentario";
         //consulta/comando, de mysql para actualizacion de datos de registros en tablas de bd
 
         if ($mysqli->query($sql) == TRUE) { //comprueba el resultado; estado del mismo:¿salio bien o mal?
 
-            return "Se actualizo correctamente el registro: " . $mysqli->host_info . "\n"; //informa del resultado correcto esperado
+            return "Se actualizo correctamente el registro"; //informa del resultado correcto esperado
 
         } else {
-            return "Ocurrió un error al actualizar: " . $mysqli->errno . "\n"; //informa del error encontrado
+            return "Ocurrió un error al actualizar: --" . $mysqli->error . "\n"; //informa del error encontrado
         }
         $mysqli->close(); //?cerrar conexion  
 
