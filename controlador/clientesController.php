@@ -28,35 +28,34 @@ switch ($opc) {
 
     case 2:
         /*
-    //! El codigo seiguiente se movio a distintos archvos para su mejor desempeño
-    //?se establece la conexion a la bd; host, user, password, bd
-    $mysqli = new mysqli("127.0.0.1", "unicuc", "1234", "cursocuc");
+            //! El codigo seiguiente se movio a distintos archvos para su mejor desempeño
+            //?se establece la conexion a la bd; host, user, password, bd
+            $mysqli = new mysqli("127.0.0.1", "unicuc", "1234", "cursocuc");
 
-     if ($mysqli->connect_errno) {// corrobora si hubo algun error al intentar establecer la conexion
-    echo "Falló la conexión: " . $mysqli->connect_error;//notifica que hubo un error y cual error fue aparentemente
-    }
-    //? una vez se establece la conexion, se obtienen los datos de una tabla: tblcomentarios
-    $getComents = $mysqli->query("SELECT * FROM tblcomentarios");
-*/
+             if ($mysqli->connect_errno) {// corrobora si hubo algun error al intentar establecer la conexion
+            echo "Falló la conexión: " . $mysqli->connect_error;//notifica que hubo un error y cual error fue aparentemente
+            }
+            //? una vez se establece la conexion, se obtienen los datos de una tabla: tblcomentarios
+            $getComents = $mysqli->query("SELECT * FROM tblcomentarios");
+        */
 
         /*
-   //? se llama a la otra clase y se obtiene uno de sus metodos/funciones
-    $clientes=new ClientesModel();
-    $getComents=$clientes->SELECT();
-    //? se corrobora la existencia de los datos
-    if ($getComents) {
-    //? se imprimen todos los registros encontrados
-    while ($fila = $getComents->fetch_assoc()) {
-    echo $fila["nombre"], "<br>";//?br es el salto de linea de html//php permite otros lenguajes bajo cierta sintaxis
-    echo $fila["email"], "<br>";
-    echo $fila["telefono"], "<br>";
-    echo $fila["comentario"], "<br>","<br>";
-    }
-    } else {
-    echo "Error al ejecutar la consulta";//?imprimir mensaje de error y el error que hubo en la conexion al ejecutar la consulta
-    }
-    
-*/
+            //? se llama a la otra clase y se obtiene uno de sus metodos/funciones
+            $clientes=new ClientesModel();
+            $getComents=$clientes->SELECT();
+            //? se corrobora la existencia de los datos
+            if ($getComents) {
+            //? se imprimen todos los registros encontrados
+                while ($fila = $getComents->fetch_assoc()) {
+                    echo $fila["nombre"], "<br>";//?br es el salto de linea de html//php permite otros lenguajes bajo cierta sintaxis
+                    echo $fila["email"], "<br>";
+                    echo $fila["telefono"], "<br>";
+                    echo $fila["comentario"], "<br>","<br>";
+                }
+            } else {
+                echo "Error al ejecutar la consulta";//?imprimir mensaje de error y el error que hubo en la conexion al ejecutar la consulta
+            }
+        */
 
         $clientes = new ClientesModel();
 
@@ -71,12 +70,16 @@ switch ($opc) {
 
         break;
 
-        case 3:
+    case 3:
             $clientes = new ClientesModel();
             $idComentario = $_POST['hddIdComentario'];
             $res = $clientes->DELETE($idComentario);
             echo $res;
-            break;
+     break;
+
+    case 4:
+        # code...
+        break;
     default:
         # code...
 

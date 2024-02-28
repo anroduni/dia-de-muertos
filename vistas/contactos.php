@@ -187,7 +187,7 @@
       document.getElementById("txtEmail").value = email
       document.getElementById("txtTelefono").value = telefono
       document.getElementById("txtComentario").value = comentario
-*/
+      */
       //Jquery
       $(`#hddIdComentario`).prop("value", idcomentario);
       $(`#txtNombre`).prop("value", nombre);
@@ -224,9 +224,10 @@
         $(`#txtNombre`).prop("value", "");
         $(`#txtEmail`).prop("value", "");
         $(`#txtTelefono`).prop("value", "");
-        $(`#txtComentario`).prop("value", "");
+        $(`#txtComentario`).prop("value", "");//se "limpian" los campos del formulario tras haber editado, 
+        //asi  permitiendo la posiblidad de poder agregar uno nuevo.
 
-        $(`#btnInsertar`).show();
+        $(`#btnInsertar`).show();//oculta/muestra botones segun sea el caso estetico de acuerdo al actual estado del formulario
         $(`#btnActualizar`).hide();
 
 
@@ -262,13 +263,14 @@
               }
             })
           } else {
-alert("no quiso eliminar")
+      alert("no quiso eliminar")
           }
         })
 
 
     }
-
+//TODO/ considerar la opcion de colocar uun ready para las otras funciones, o una funcion para el insertar comentarios, todas las funciones dentro de un solo ready
+//TODO/ considera pros y contras, escoje la mejor opcion segun sea el caso
     //Jquery
     $(document).ready(function() { //se asegura de que el arbol dom ya este cargado
       $("#btnActualizar").hide(); //oculta el boton
