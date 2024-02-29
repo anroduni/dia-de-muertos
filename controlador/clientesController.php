@@ -72,13 +72,31 @@ switch ($opc) {
 
     case 3:
             $clientes = new ClientesModel();
-            $idComentario = $_POST['hddIdComentario'];
+            $idComentario = $_POST['idComentario'];
             $res = $clientes->DELETE($idComentario);
             echo $res;
      break;
 
     case 4:
-        # code...
+        $clientes = new ClientesModel();
+              $getComments = $clientes->SELECT();
+              if ($getComments) {
+                while ($fila = $getComments->fetch_assoc()) {
+                  echo "<tr>";
+                  echo "<td>" . $fila["nombre"] . "</td>";
+                  echo "<td>" . $fila["email"] . "</td>";
+                  echo "<td>" . $fila["telefono"] . "</td>";
+                  echo "<td>" . $fila["comentario"] . "</td>";
+                  echo "<td>";
+                  //            echo "<button type='button' class='btn btn-primary' \"onclick=actualizar('".$fila["idComentario"]."\",\"".$fila["nombre"]."\",\"".$fila["email"]."\",\"".$fila["telefono"]."\",\"".$fila["comentario"]."\")'>Editar comentario</button>";
+                  //          echo "<button type='button' class='btn btn-danger' \"onclick=eliminar()\">Eliminar comentario</button>";
+                  echo "<button type='button' class='btn btn-primary' onclick=\"actualizar('" . $fila["idComentario"] . "','" . $fila["nombre"] . "','" . $fila["email"] . "','" . $fila["telefono"] . "','" . $fila["comentario"] . "')\">Editar comentario</button>";
+                  echo "<button type='button' class='btn btn-danger' onclick=\"eliminar('" . $fila["idComentario"] . "')\">Eliminar comentario</button>";
+
+                  echo "</td>";
+                  echo "</tr>";
+                }
+              }
         break;
     default:
         # code...
@@ -241,3 +259,32 @@ Reinicia el servidor MySQL para aplicar los cambios.
 //puedes ajustar el nombre del archivo al que desees; no la extension
 
 //--------------------------------------------------------
+
+
+/*
+anterior codigo en tbl comentarios para mostrarlos, fue movido, salvo los require a el controlador opcion 4,
+los require sirven para "importar/conectar" con otros archivos y usar los recursos necesarios de estos.
+<?php
+require_once("../modelos/conexion.php");
+require_once("../modelos/ClientesModel.php");
+$clientes = new ClientesModel();
+$getComments = $clientes->SELECT();
+if ($getComments) {
+  while ($fila = $getComments->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td>" . $fila["nombre"] . "</td>";
+    echo "<td>" . $fila["email"] . "</td>";
+    echo "<td>" . $fila["telefono"] . "</td>";
+    echo "<td>" . $fila["comentario"] . "</td>";
+    echo "<td>";
+    //?          echo "<button type='button' class='btn btn-primary' \"onclick=actualizar('".$fila["idComentario"]."\",\"".$fila["nombre"]."\",\"".$fila["email"]."\",\"".$fila["telefono"]."\",\"".$fila["comentario"]."\")'>Editar comentario</button>";
+    //?         echo "<button type='button' class='btn btn-danger' \"onclick=eliminar()\">Eliminar comentario</button>";
+    echo "<button type='button' class='btn btn-primary' onclick=\"actualizar('" . $fila["idComentario"] . "','" . $fila["nombre"] . "','" . $fila["email"] . "','" . $fila["telefono"] . "','" . $fila["comentario"] . "')\">Editar comentario</button>";
+    echo "<button type='button' class='btn btn-danger' onclick=\"eliminar('" . $fila["idComentario"] . "')\">Eliminar comentario</button>";
+
+    echo "</td>";
+    echo "</tr>";
+  }
+}
+?>
+*/

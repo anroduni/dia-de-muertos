@@ -65,7 +65,7 @@ class ClientesModel
 
         if ($mysqli->query($sql) == TRUE) { //comprueba el resultado; estado del mismo:¿salio bien o mal?
 
-            return "Eliminacion/borrado Exitoso" . $mysqli->host_info . "\n"; //informa del resultado correcto esperado
+            return "Eliminacion/borrado Exitoso"; // . $mysqli->host_info . "\n";   informa del resultado correcto esperado
 
         } else {
             return "Ocurrió un error al borrar/eliminar el registro: " . $mysqli->errno . "\n"; //informa del error encontrado

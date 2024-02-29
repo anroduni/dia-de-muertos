@@ -94,7 +94,7 @@
 
 
 
-          <table class="table table-striped">
+          <table class="table table-striped" >
             <thead>
               <tr>
                 <th>Nombre</th>
@@ -103,30 +103,9 @@
                 <th>Comentario</th>
               </tr>
             </thead>
-            <tbody>
-              <?php
-              require_once("../modelos/conexion.php");
-              require_once("../modelos/ClientesModel.php");
-              $clientes = new ClientesModel();
-              $getComments = $clientes->SELECT();
-              if ($getComments) {
-                while ($fila = $getComments->fetch_assoc()) {
-                  echo "<tr>";
-                  echo "<td>" . $fila["nombre"] . "</td>";
-                  echo "<td>" . $fila["email"] . "</td>";
-                  echo "<td>" . $fila["telefono"] . "</td>";
-                  echo "<td>" . $fila["comentario"] . "</td>";
-                  echo "<td>";
-                  //            echo "<button type='button' class='btn btn-primary' \"onclick=actualizar('".$fila["idComentario"]."\",\"".$fila["nombre"]."\",\"".$fila["email"]."\",\"".$fila["telefono"]."\",\"".$fila["comentario"]."\")'>Editar comentario</button>";
-                  //          echo "<button type='button' class='btn btn-danger' \"onclick=eliminar()\">Eliminar comentario</button>";
-                  echo "<button type='button' class='btn btn-primary' onclick=\"actualizar('" . $fila["idComentario"] . "','" . $fila["nombre"] . "','" . $fila["email"] . "','" . $fila["telefono"] . "','" . $fila["comentario"] . "')\">Editar comentario</button>";
-                  echo "<button type='button' class='btn btn-danger' onclick=\"eliminar('" . $fila["idComentario"] . "')\">Eliminar comentario</button>";
+            <tbody id="tblComentariosTbody" name="tblComentariosTbody">
 
-                  echo "</td>";
-                  echo "</tr>";
-                }
-              }
-              ?>
+
             </tbody>
           </table>
 
@@ -207,74 +186,87 @@
         $.ajax({ //peticion ajax; hay maneraas mas recientes, investiga, no recuerdo el nombre
           type: "POST", //escoge como mandar los datos, GET//POST//PUT//DELETE // anteriormente especificada en el method del form
           url: "../controlador/clientesController.php", //lugar de destino del envio//ruta anteriormente en action del form
-          data: formData, //datos a mandar
+          data: formData, //datos a mandar, sugerencia propia: Intentar mandar la opcion opc, aqui, y no en el form serialize
           success: function(data) { //tras la accion(mensaje), recibe una respuesta
             console.log(data); //imprime data para saber su contenido
             $("#alert1").show(); //muestra la alerta
             $("#alert1").html(data) //coloca la info de la respuesta data, en la alerta
             if (data.trim() === "Se actualizo correctamente el registro") { //compara el valor recibido con el valor esperado
               $("#alert1").attr("class", "alert-primary"); //otorga nuevos/distintos estilos de css boostrap
+            getComments()
+             $(`#hddIdComentario`).prop("value", "");
+        $(`#txtNombre`).prop("value", "");
+        $(`#txtEmail`).prop("value", "");
+        $(`#txtTelefono`).prop("value", "");
+        $(`#txtComentario`).prop("value", ""); //se "limpian" los campos del formulario tras haber editado, 
+        //asi  permitiendo la posiblidad de poder agregar uno nuevo.
+
+        $(`#btnInsertar`).show(); //oculta/muestra botones segun sea el caso estetico de acuerdo al actual estado del formulario
+        $(`#btnActualizar`).hide();
             } else {
               $("#alert1").attr("class", "alert-danger"); //addClass tambien funciona
             }
           }
         });
 
-        $(`#hddIdComentario`).prop("value", "");
-        $(`#txtNombre`).prop("value", "");
-        $(`#txtEmail`).prop("value", "");
-        $(`#txtTelefono`).prop("value", "");
-        $(`#txtComentario`).prop("value", "");//se "limpian" los campos del formulario tras haber editado, 
-        //asi  permitiendo la posiblidad de poder agregar uno nuevo.
-
-        $(`#btnInsertar`).show();//oculta/muestra botones segun sea el caso estetico de acuerdo al actual estado del formulario
-        $(`#btnActualizar`).hide();
-
+       
 
       })
     }
 
     function eliminar(idcomentario) {
-      
+
       if (confirm("¿Deseas eliminar el comentario selecionado?")) {
-       alert(" mover aqui el ajax")
-      } else {
-        
-      }
-      confirm("¿Deseas eliminar el comentario selecionado?",
-        function(respuesta) {
-          console.log(respuesta);
-          if (respuesta == `granted`) {
-            $.ajax({
-              type: "POST",
-              data: {
-                "idcomentario": idcomentario
-              },
-              url: "../controlador/clientesController.php",
-              success: function(data) {
-                console.log(data); //imprime data para saber su contenido
-                $("#alert1").show(); //muestra la alerta
-                $("#alert1").html(data) //coloca la info de la respuesta data, en la alerta
-                if (data.trim() === "Eliminacion/borrado Exitoso") { //compara el valor recibido con el valor esperado
-                  $("#alert1").attr("class", "alert-primary"); //otorga nuevos/distintos estilos de css boostrap
-                } else {
-                  $("#alert1").attr("class", "alert-danger"); //addClass tambien funciona
-                }
-              }
-            })
-          } else {
-      alert("no quiso eliminar")
+        $.ajax({
+          type: "POST",
+          data: {
+            "opcionOpc": 3,
+            "idComentario": idcomentario
+          },
+          url: "../controlador/clientesController.php",
+          success: function(data) {
+            console.log(data); //imprime data para saber su contenido
+            $("#alert1").show(); //muestra la alerta
+            $("#alert1").html(data) //coloca la info de la respuesta data, en la alerta
+            if (data.trim() === "Eliminacion/borrado Exitoso") { //compara el valor recibido con el valor esperado
+              $("#alert1").attr("class", "alert-primary"); //otorga nuevos/distintos estilos de css boostrap
+            getComments()
+            } else {
+              $("#alert1").attr("class", "alert-danger"); //addClass tambien funciona
+            }
           }
         })
+      } else {
+
+      }
+
 
 
     }
-//TODO/ considerar la opcion de colocar uun ready para las otras funciones, o una funcion para el insertar comentarios, todas las funciones dentro de un solo ready
-//TODO/ considera pros y contras, escoje la mejor opcion segun sea el caso
+    //TODO/ considerar la opcion de colocar uun ready para las otras funciones, o una funcion para el insertar comentarios, todas las funciones dentro de un solo ready
+    //TODO/ considera pros y contras, escoje la mejor opcion segun sea el caso
+
+    function getComments() {
+      $.ajax({
+        type: "POST",
+        data: {
+          "opcionOpc": 4,
+        },
+        url: "../controlador/clientesController.php",
+        success: function(data) {
+          $("#tblComentariosTbody").html(data) //revisar si js, jquery usaban el id o el name
+        }
+      })
+    }
+
     //Jquery
     $(document).ready(function() { //se asegura de que el arbol dom ya este cargado
       $("#btnActualizar").hide(); //oculta el boton
       $("#alert1").hide(); //oculta la alerta//hide() en gral oculta elementos
+
+      getComments();
+
+
       $("#btnInsertar").click(function() { //se le otorga el envento onclick
         $(`#opcionOpc`).prop("value", 1);
         // $("#frmContacto").submit(function(){
